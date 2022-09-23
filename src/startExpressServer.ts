@@ -1,3 +1,5 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-restricted-syntax */
 import express, { Application } from 'express';
 import { Server } from 'http';
 import PubSub from 'pubsub-js';
@@ -60,76 +62,86 @@ export const startExpressServer = (
   }
 
   app.post(webhookPath, async (req, res) => {
-    if (!req.body.object || !req.body.entry?.[0]?.changes?.[0]?.value) {
+    console.log(JSON.stringify(req.body));
+
+    if (!req.body.object || !req.body.entry) {
       res.sendStatus(400);
       return;
     }
-    if (req.body?.entry?.[0]?.changes?.[0]?.value?.statuses) {
-      res.sendStatus(202);
-      return;
+
+    for (const entry of req.body.entry ?? []) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const change of entry.changes ?? []) {
+        const { value } = change;
+        if (value != null) {
+          for (const message of value.messages ?? []) {
+            const {
+              from,
+              id,
+              timestamp,
+              type,
+              ...rest
+            } = message;
+
+            let event: PubSubEvent | undefined;
+            let data: FreeFormObject | undefined;
+
+            switch (type) {
+              case 'text':
+                event = PubSubEvents.text;
+                data = { text: rest.text?.body };
+                break;
+
+              case 'image':
+              case 'document':
+              case 'audio':
+              case 'video':
+              case 'sticker':
+              case 'location':
+              case 'contacts':
+                event = PubSubEvents[type as PubSubEvent];
+                data = rest[type];
+                break;
+
+              case 'interactive':
+                event = rest.interactive.type;
+                data = {
+                  ...(rest.interactive.list_reply || rest.interactive.button_reply),
+                };
+                break;
+
+              default:
+                break;
+            }
+
+            if (rest.context) {
+              data = {
+                ...data,
+                context: rest.context,
+              };
+            }
+
+            const name = value.contacts?.[0]?.profile?.name ?? undefined;
+
+            const to_phone_number_id = value.metadata?.phone_number_id ?? "";
+
+            if (event && data) {
+              const payload: Message = {
+                from,
+                name,
+                id,
+                timestamp,
+                type: event,
+                data,
+                to_phone_number_id,
+              };
+
+              ['message', event].forEach((e) => PubSub.publish(e, payload));
+            }
+          }
+        }
+      }
     }
-
-    const {
-      from,
-      id,
-      timestamp,
-      type,
-      ...rest
-    } = req.body.entry[0].changes[0].value.messages[0];
-
-    let event: PubSubEvent | undefined;
-    let data: FreeFormObject | undefined;
-
-    switch (type) {
-      case 'text':
-        event = PubSubEvents.text;
-        data = { text: rest.text?.body };
-        break;
-
-      case 'image':
-      case 'document':
-      case 'audio':
-      case 'video':
-      case 'sticker':
-      case 'location':
-      case 'contacts':
-        event = PubSubEvents[type as PubSubEvent];
-        data = rest[type];
-        break;
-
-      case 'interactive':
-        event = rest.interactive.type;
-        data = {
-          ...(rest.interactive.list_reply || rest.interactive.button_reply),
-        };
-        break;
-
-      default:
-        break;
-    }
-
-    if (rest.context) {
-      data = {
-        ...data,
-        context: rest.context,
-      };
-    }
-
-    const name = req.body.entry[0].changes[0].value.contacts?.[0]?.profile?.name ?? undefined;
-
-    if (event && data) {
-      const payload: Message = {
-        from,
-        name,
-        id,
-        timestamp,
-        type: event,
-        data,
-      };
-
-      ['message', event].forEach((e) => PubSub.publish(e, payload));
-    }
-
     res.sendStatus(200);
   });
 

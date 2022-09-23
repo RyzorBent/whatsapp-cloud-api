@@ -12,6 +12,7 @@ export interface Message {
   timestamp: string;
   type: PubSubEvent;
   data: FreeFormObject; // TODO: properly define interfaces for each type
+  to_phone_number_id: string;
 }
 
 export interface Bot {
