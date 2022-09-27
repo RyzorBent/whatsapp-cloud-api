@@ -1,5 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-restricted-syntax */
 import express, { Application } from 'express';
 import { Server } from 'http';
 import PubSub from 'pubsub-js';
@@ -62,6 +60,7 @@ export const startExpressServer = (
   }
 
   app.post(webhookPath, async (req, res) => {
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify(req.body));
 
     if (!req.body.object || !req.body.entry) {
@@ -69,12 +68,11 @@ export const startExpressServer = (
       return;
     }
 
-    for (const entry of req.body.entry ?? []) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const change of entry.changes ?? []) {
+    (req.body.entry ?? []).forEach((entry: any) => {
+      (entry.changes ?? []).forEach((change: any) => {
         const { value } = change;
         if (value != null) {
-          for (const message of value.messages ?? []) {
+          (value.messages ?? []).forEach((message: any) => {
             const {
               from,
               id,
@@ -124,7 +122,7 @@ export const startExpressServer = (
 
             const name = value.contacts?.[0]?.profile?.name ?? undefined;
 
-            const to_phone_number_id = value.metadata?.phone_number_id ?? "";
+            const toPhoneNumberId = value.metadata?.phone_number_id ?? '';
 
             if (event && data) {
               const payload: Message = {
@@ -134,15 +132,16 @@ export const startExpressServer = (
                 timestamp,
                 type: event,
                 data,
-                to_phone_number_id,
+                to_phone_number_id: toPhoneNumberId,
               };
 
               ['message', event].forEach((e) => PubSub.publish(e, payload));
             }
-          }
+          });
         }
-      }
-    }
+      });
+    });
+
     res.sendStatus(200);
   });
 

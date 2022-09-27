@@ -9,6 +9,8 @@
     "lint": "eslint --ext .ts ./",
     "ts-check": "tsc --noEmit -p  .",
     "test": "npm run build && jest --testPathPattern=dist",
+    "pre-commit-message": "echo 'Please wait, running pre-commit checks...' && exit 0",
+    "pre-commit": "npm-run-all lint ts-check",
     "prepare": "[ -d './.husky' ] && husky install"
   },
   "files": [
