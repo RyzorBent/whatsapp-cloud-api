@@ -250,6 +250,16 @@ WEBHOOK_VERIFY_TOKEN=""
 WEBHOOK_PATH=""
 ```
 
+### Publishing
+
+In case using a scoped package, you can publish as follows:
+
+```bash
+npm run build
+npm publish --access public
+```
+
+
 ### Attribution
 
 Library API inspired by [node-telegram-bot-api](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md).
