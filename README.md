@@ -4,6 +4,10 @@ https://github.com/tawn33y/whatsapp-cloud-api
 
 To see the changes made you can compare the two repositories.
 
+*Note*: This repo is published to https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
+
+The following lines is the README of the original work.
+
 # whatsapp-cloud-api
 
 `whatsapp-cloud-api` is a Node.js library for creating bots and sending/receiving messages using the [Whatsapp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api/).
