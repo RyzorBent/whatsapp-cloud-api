@@ -169,6 +169,9 @@ interface ParameterVideo {
 
 interface TemplateComponentTypeHeader {
   type: 'header';
+  parameters: (
+    ParameterImage
+  )[];
 }
 
 interface TemplateComponentTypeBody {
