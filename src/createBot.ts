@@ -21,7 +21,13 @@ const payloadBase: PaylodBase = {
 
 export const createBot: ICreateBot = (fromPhoneNumberId, accessToken, opts) => {
   let expressServer: ExpressServer;
-  const sendRequest = sendRequestHelper(fromPhoneNumberId, accessToken, opts?.version);
+
+  const sendRequest = sendRequestHelper(
+    fromPhoneNumberId,
+    accessToken,
+    opts?.responseLogger,
+    opts?.version,
+  );
 
   const getMediaPayload = (urlOrObjectId: string, options?: MediaBase) => ({
     ...(isURL(urlOrObjectId) ? { link: urlOrObjectId } : { id: urlOrObjectId }),

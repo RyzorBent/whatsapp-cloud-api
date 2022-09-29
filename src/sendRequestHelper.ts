@@ -18,9 +18,15 @@ export interface SendMessageResult {
   whatsappId: string;
 }
 
+const defaultLogger = async (obj: any) => {
+  // eslint-disable-next-line no-console
+  console.log(obj);
+};
+
 export const sendRequestHelper = (
   fromPhoneNumberId: string,
   accessToken: string,
+  responseLogger: (obj: any) => Promise<void> = defaultLogger,
   version: string = 'v14.0',
 ) => async <T>(data: T): Promise<SendMessageResult> => {
   try {
@@ -36,16 +42,29 @@ export const sendRequestHelper = (
     });
     const result = rawResult as OfficialSendMessageResult;
 
-    return {
+    const returnObject = {
       messageId: result.messages?.[0]?.id,
       phoneNumber: result.contacts?.[0]?.input,
       whatsappId: result.contacts?.[0]?.wa_id,
     };
+
+    try {
+      await responseLogger({
+        fromPhoneNumberId,
+        requestBody: data,
+        responseSummary: returnObject,
+      });
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+
+    return returnObject;
   } catch (err: unknown) {
     if ((err as any).response) {
       throw (err as AxiosError)?.response?.data;
-    // } else if ((err as any).request) {
-    //   throw (err as AxiosError)?.request;
+      // } else if ((err as any).request) {
+      //   throw (err as AxiosError)?.request;
     } else if (err instanceof Error) {
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw (err as Error).message;

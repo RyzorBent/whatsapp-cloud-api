@@ -88,5 +88,6 @@ export type ICreateBot = (
   accessToken: string,
   options?: {
     version?: string;
+    responseLogger?: (obj: any) => Promise<void>;
   },
 ) => Bot;
