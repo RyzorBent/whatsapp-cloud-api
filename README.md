@@ -2,11 +2,16 @@ This repository is a fork of 🤗:
 
 https://github.com/tawn33y/whatsapp-cloud-api
 
-To see the changes made you can compare the two repositories.
+Changes made here:
+* Added to_phone_number so you can identify which phone number was the one receiving the message.
+* Added support for "reply" from template button (support for type 'button' in messages).
+* Added 'parameters' type for template header component.
+* Added a logging callback for each message sent so you can log each sent message easily.
+* Other details: to see all the changes made you can compare the two repositories.
 
 *Note*: This repo is published to https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
 
-The following lines is the README of the original work.
+The following lines are the README of the original work.
 
 # whatsapp-cloud-api
 
