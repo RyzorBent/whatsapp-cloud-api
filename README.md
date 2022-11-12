@@ -11,6 +11,8 @@ Changes made here:
 
 *Note*: This repo is published to https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
 
+*Note2*: I built a [chats visualization frontend compatible here](https://github.com/j05u3/chats_manager) that you can use
+
 The following lines are the README of the original work.
 
 # whatsapp-cloud-api
