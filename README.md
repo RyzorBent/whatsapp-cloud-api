@@ -9,7 +9,7 @@ Changes made here:
 * Added a logging callback for each message sent so you can log each sent message easily.
 * Other details: to see all the changes made you can compare the two repositories.
 
-*Note*: This repo is published to https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
+*Note*: [The current repo](https://github.com/j05u3/whatsapp-cloud-api) is published on npm as https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
 
 *Note2*: I built a [chats visualization frontend compatible here](https://github.com/j05u3/chats_manager) that you can use
 
