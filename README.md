@@ -7,6 +7,7 @@ Changes made here:
 * Added support for "reply" from template button (support for type 'button' in messages).
 * Added 'parameters' type for template header component.
 * Added a logging callback for each message sent so you can log each sent message easily.
+* Added a way to listen for status changes in messages. This allows to listen for 'failed', 'read', ... statuses on the messages.
 * Other details: to see all the changes made you can compare the two repositories.
 
 *Note*: [The current repo](https://github.com/j05u3/whatsapp-cloud-api) is published on npm as https://www.npmjs.com/package/@josue.0/whatsapp-cloud-api
