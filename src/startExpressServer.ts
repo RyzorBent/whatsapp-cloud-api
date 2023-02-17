@@ -3,7 +3,7 @@ import { Server } from 'http';
 import PubSub from 'pubsub-js';
 import { FreeFormObject } from './utils/misc';
 import { PubSubEvent, PubSubEvents } from './utils/pubSub';
-import { Message } from './createBot.types';
+import { Message, Status, StatusReceived } from './createBot.types';
 
 export interface ServerOptions {
   app?: Application;
@@ -72,6 +72,9 @@ export const startExpressServer = (
       (entry.changes ?? []).forEach((change: any) => {
         const { value } = change;
         if (value != null) {
+          const toPhoneNumberId = value.metadata?.phone_number_id ?? '';
+          // processing messages
+          // https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components#messages-object
           (value.messages ?? []).forEach((message: any) => {
             const {
               from,
@@ -122,8 +125,6 @@ export const startExpressServer = (
 
             const name = value.contacts?.[0]?.profile?.name ?? undefined;
 
-            const toPhoneNumberId = value.metadata?.phone_number_id ?? '';
-
             if (event && data) {
               const payload: Message = {
                 from,
@@ -137,6 +138,16 @@ export const startExpressServer = (
 
               ['message', event].forEach((e) => PubSub.publish(e, payload));
             }
+          });
+          // processing statuses
+          // https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components#statuses-object
+          (value.statuses ?? []).forEach((_status: StatusReceived) => {
+            const payload: Status = {
+              ..._status,
+              to_phone_number_id: toPhoneNumberId,
+            };
+
+            ['status'].forEach((e) => PubSub.publish(e, payload));
           });
         }
       });

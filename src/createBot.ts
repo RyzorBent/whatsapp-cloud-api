@@ -46,6 +46,9 @@ export const createBot: ICreateBot = (fromPhoneNumberId, accessToken, opts) => {
     on: (event, cb) => {
       PubSub.subscribe(event, (_, data) => cb(data));
     },
+    onStatusChange: (cb) => {
+      PubSub.subscribe('status', (_, data) => cb(data));
+    },
 
     sendText: (to, text, options) => sendRequest<TextMessage>({
       ...payloadBase,
