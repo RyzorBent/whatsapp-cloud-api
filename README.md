@@ -1,8 +1,11 @@
+Warning ⚠️: I have stopped the work on this. I will not be accepting any PRs or issues. If you want to take over the project, please contact me. I recommend migrating to https://github.com/j05u3/whatsapp-cloud-api-express.
+
 This repository is a fork of 🤗:
 
 https://github.com/tawn33y/whatsapp-cloud-api
 
-Changes made here:
+Changes made here in this fork:
+
 * Added to_phone_number so you can identify which phone number was the one receiving the message.
 * Added support for "reply" from template button (support for type 'button' in messages).
 * Added 'parameters' type for template header component.
