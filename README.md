@@ -1,5 +1,7 @@
 **Warning ⚠️** : I have stopped the work on this. I will not be accepting any PRs or issues. If you want to take over the project, please contact me. I recommend migrating to https://github.com/j05u3/whatsapp-cloud-api-express, migration should be easy as the API is basically the same with minor name changes.
 
+---
+
 This repository is a fork of 🤗:
 
 https://github.com/tawn33y/whatsapp-cloud-api
